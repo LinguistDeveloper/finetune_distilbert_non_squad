@@ -55,13 +55,13 @@ Answer Positioning: Answer positions from SQuAD were removed initially, then rei
 
 - Fine-tuned the model using the following hyperparameters:
 
-  - Optimizer: AdamW with a learning rate of 2e-5.
+  - Optimizer: AdamW with a learning rate of ``2e-5``.
 
-  - Batch size: 16.
+  - Batch size: ``16``.
 
-  - Epochs: 3.
+  - Epochs: ``3``.
 
-  - Weight Decay: 0.01.
+  - Weight Decay: ``0.01``.
 
 - Used cross-entropy loss for optimization.
 
@@ -76,3 +76,46 @@ Answer Positioning: Answer positions from SQuAD were removed initially, then rei
   - F1 Score
 
 - Compared results with other QA models to determine the effectiveness of the custom dataset.
+
+## How to Run
+
+### Install Dependencies:
+
+``pip install transformers torch pandas scikit-learn``
+
+### Run the Script:
+
+1. Place the modified dataset in the project directory.
+
+2. Execute the Python scripts.
+
+# Example Code
+
+```from transformers import AutoTokenizer, AutoModelForQuestionAnswering
+import torch
+
+# Load pre-trained DistilBERT tokenizer and model
+tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+model = AutoModelForQuestionAnswering.from_pretrained("distilbert-base-uncased")
+
+# Example context and question
+context = "The Eiffel Tower is located in Paris, France. It was completed in 1889."
+question = "Where is the Eiffel Tower located?"
+
+# Tokenize and prepare input
+inputs = tokenizer(question, context, return_tensors="pt", max_length=512, padding="max_length", truncation=True)
+
+# Predict answer
+outputs = model(**inputs)
+start_idx = outputs.start_logits.argmax()
+end_idx = outputs.end_logits.argmax()
+
+# Convert token indices to answer string
+answer_tokens = inputs.input_ids[0][start_idx:end_idx+1]
+answer = tokenizer.decode(answer_tokens)
+
+# Output the answer
+print(f"Answer: {answer}")
+```
+
+
