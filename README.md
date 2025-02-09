@@ -1,4 +1,4 @@
-# finetune_distilbert_non_squad
+# Fine-tune DistilBERT on non-SQuAD data
 
 This project demonstrates the process of fine-tuning a DistilBERT-based model (from Hugging Face's Transformers library) for a custom Question Answering (QA) task. The project adapts a sample of the SQuAD dataset (with answer positions manually removed) and inserts answer positions programmatically from the answers; it also uses the TriviaQA dataset to simulate the more complex structure of many (non-SQuAD) datasets, and extracts the required data. If you are new to fine-tuning DistilBERT for QA, SQuAD is the easiest dataset to start with because it has a clean structure, pre-existing models, and official support in libraries like Hugging Face. However, adapting other datasets (like TriviaQA) can still be done with extra preprocessing steps, as is demonstrated here.
 
@@ -41,6 +41,38 @@ Answer Positioning: Answer positions from SQuAD were removed initially, then rei
 
 #### Tokenization:
 
-Tokenized the context, question, and answer texts using DistilBERT's tokenizer.
+- Tokenized the context, question, and answer texts using DistilBERT's tokenizer.
 
-Applied padding and truncation to ensure uniform sequence lengths.
+- Applied padding and truncation to ensure uniform sequence lengths.
+
+#### Model Definition:
+
+- Used the pre-trained DistilBERT model.
+
+- Adapted the model for Question Answering by adding a QA head.
+
+#### Fine-Tuning:
+
+- Fine-tuned the model using the following hyperparameters:
+
+  - Optimizer: AdamW with a learning rate of 2e-5.
+
+  - Batch size: 16.
+
+  - Epochs: 3.
+
+  - Weight Decay: 0.01.
+
+- Used cross-entropy loss for optimization.
+
+- Evaluated performance on a held-out validation set.
+
+#### Evaluation:
+
+- Assessed model performance using:
+
+  - Exact Match Score (EM)
+
+  - F1 Score
+
+- Compared results with other QA models to determine the effectiveness of the custom dataset.
